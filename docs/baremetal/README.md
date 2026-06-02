@@ -4,7 +4,7 @@ This guide explains how to deploy Sylva on bare-metal infrastructure using Clust
 
 Use this guide when the target environment is real physical servers instead of VMware VMs.
 
-For the exact ProxmoxBMC Option B lab path from bootstrap VM to fake bare-metal target VM, see [proxmoxbmc-option-b-runbook.md](proxmoxbmc-option-b-runbook.md).
+For the validated ProxmoxBMC lab path, including the HTTPS iPXE workaround and every problem/fix from the real deployment, start with [proxmoxbmc-validated-lab.md](proxmoxbmc-validated-lab.md). For the earlier Option B reference runbook, see [proxmoxbmc-option-b-runbook.md](proxmoxbmc-option-b-runbook.md).
 
 ## Bootstrap Options
 
@@ -24,7 +24,7 @@ For your Proxmox-based environment, these are the realistic options:
 Recommended order:
 
 1. Use **Option D** if the goal is the fastest working Sylva lab.
-2. Use **Option B** if you want the bootstrap VM to emulate BMC control for a separate Proxmox target VM with ProxmoxBMC.
+2. Use **Option B** if you want the bootstrap VM to emulate BMC control for a separate Proxmox target VM with ProxmoxBMC. Use the validated guide: [proxmoxbmc-validated-lab.md](proxmoxbmc-validated-lab.md).
 3. Use **Option A** if the company gives you real physical servers with real BMC access.
 4. Use **Option C** if you cannot get a Proxmox-aware emulator and can enable nested virtualization.
 5. Use **Option E** if the goal is mainly O-DU/O-CU workload deployment, not Sylva cluster lifecycle.

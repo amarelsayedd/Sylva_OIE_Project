@@ -88,6 +88,49 @@ flowchart TB
     monitoring --> workload
 ```
 
+## Validated ProxmoxBMC CAPM3 Lab Architecture
+
+The VMware CAPV design above is the production-style architecture for vSphere. The validated Proxmox lab uses CAPM3 and Metal3 instead. It treats one Proxmox VM as fake bare metal and controls it through ProxmoxBMC from the bootstrap VM.
+
+For the full working procedure and troubleshooting history, see [baremetal/proxmoxbmc-validated-lab.md](baremetal/proxmoxbmc-validated-lab.md).
+
+```mermaid
+flowchart TB
+    proxmox["Proxmox host"]
+
+    subgraph bootstrap_lab["Bootstrap VM"]
+        sylva_lab["Sylva bootstrap tooling"]
+        kind_lab["Kind bootstrap cluster"]
+        ironic_lab["Metal3 / Ironic / CAPM3"]
+        bmc_lab["ProxmoxBMC<br/>ipmi://172.18.0.1:6625"]
+        http_lab["Temporary HTTP iPXE server<br/>http://10.237.71.153:8080"]
+    end
+
+    subgraph fakebm_lab["Target VM 109 as fake bare metal"]
+        net_lab["net0<br/>BC:24:11:8B:4D:7F"]
+        disk_lab["scsi0 OS disk"]
+        ipa_lab["Ironic Python Agent ramdisk"]
+        rke2_lab["Provisioned RKE2 node"]
+    end
+
+    sylva_lab --> kind_lab
+    kind_lab --> ironic_lab
+    ironic_lab -->|"IPMI power control"| bmc_lab
+    bmc_lab -->|"Proxmox API"| proxmox
+    proxmox --> fakebm_lab
+    fakebm_lab -->|"Manual iPXE chain"| http_lab
+    http_lab -->|"kernel/initramfs"| ipa_lab
+    ipa_lab -->|"inspection callback"| ironic_lab
+    ironic_lab -->|"OS provisioning"| disk_lab
+    disk_lab --> rke2_lab
+```
+
+Validated state flow:
+
+```text
+registering -> inspecting -> preparing -> available -> provisioning
+```
+
 ## O-RAN Workload Design
 
 The first lab deployment can use an O-CU stub or lightweight O-CU container. The goal is to prove that the Sylva workload cluster can host and manage an O-RAN CNF pair.

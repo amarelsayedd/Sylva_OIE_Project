@@ -4,6 +4,8 @@ This runbook documents the full lab path for using a **Bootstrap VM on Proxmox**
 
 Use this when you do not have a real physical BMC, but you want to practice the bare-metal CAPM3 flow.
 
+For the fully validated version of this lab, including the exact HTTPS iPXE problem, temporary HTTP boot workaround, stale inspection reset, and the full problem/fix matrix from the real deployment, use [proxmoxbmc-validated-lab.md](proxmoxbmc-validated-lab.md).
+
 ## Final Lab Architecture
 
 ```mermaid
@@ -822,4 +824,3 @@ Then follow the main README O-RAN workload steps.
 | PXE timeout | Provisioning network problem | Check `net0`, DHCP, Metal3/Ironic services |
 | `cluster unreachable :6443` | RKE2 API not ready | Check machine provisioning, VIP, RKE2 service |
 | Longhorn errors | Storage stage | Disable Longhorn until cluster works |
-
